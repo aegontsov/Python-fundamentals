@@ -1,89 +1,68 @@
 __author__ = "Гонцов Александр Евгеньевич"
 
-Task 1, easy, file_name - creator.py
+import random
 
-import os
+pupils = ('Аваньков','Ткачов','Ларионова','Совокурина','Пиров','Сергеев','Каталонина','Бийский','Прозорляев','Захарова','Лунев')
+litera = ('А.','Б.','В.','Г.','Д.','Е.','Ж.','З.','И.','К.')
+subjects = ('Алгебра', 'Русский язык', 'Обществознание', 'Физика', 'Английский язык', 'Литература', 'Биология', 'География')
 
-def creator(dirname):
-    try:
-        os.mkdir(dirname)
-    except Exception:
-        print("Can't create directory ", dirname)
+class School():
+    def __init__(self,name):
+        self.name = name
+        self.Classes = []
+    def addClass(self, Litera):
+        self.Classes.append(Litera)
+    def showClasses(self):
+        print('Школа {} содержит:'.format(self.name))
+        for i in self.Classes:
+            print('класс {}'.format(i.name))
+    def showClass(self, name):
+        for i in self.Classes:
+            if i.name == name: i.showClass()
+    def showPupilInfo(self, name):
+        for classes in self.Classes:
+            for Pupils in classes.Pupils:
+                if Pupils.name == name:
+                    for teacher in classes.Teachers:
+                        print('Ученик {} класс {} преподаватель {} предмет {}'.format(Pupils.name, classes.name, teacher.name, teacher.subject))
+    def showPupilParents(self, name):
+        for cl in self.Classes:
+            for pupils in cl.Pupils:
+                if pupils.name == name: pupils.showParents()
+    def genSchool(self, classes, pupils, subjects):
+        for i in range(int(classes)):                 
+            new_class = Class(str(random.randint(1,11))+random.choice(('A', 'Б', 'В', 'Г')))
+            self.addClass(new_class)
+            for i in range(int(pupils)):
+                new_class.addPupil(Pupil(random.choice(pupils)+' '+random.choice(litera)+random.choice(litera),
+                                      random.choice(pupils)+'a '+random.choice(litera)+random.choice(litera),
+                                      random.choice(pupils)+' '+random.choice(litera)+random.choice(litera)))
+            for i in range(int(subjects)):
+                new_class.addTeacher(random.choice(pupils)+random.choice(litera)+random.choice(litera), random.choice(subjects))
+            
+class Class():
+    def __init__(self, name):
+        self.name = name
+        self.Pupils = []
+        self.Teachers = []
+    def addPupil(self, pupil):
+        self.Pupils.append(pupil)
+    def addTeacher(self, name, subject):
+        self.Teachers.append(Teacher(name, subject))
+    def showClass(self):
+        print('Класс {} содержит:'.format(self.name))
+        for itm in self.Pupils:
+            print('ученик {}'.format(itm.name))
 
-def C_multiply():
-    for index in range(1, 10):
-        creator("dir_", str(1))
+class Pupil():
+    def __init__(self, name, father, mother):
+        self.name = name
+        self.father = father
+        self.mother = mother
+    def showParents(self):
+        print('Отец - {}, Мать - {}'.format(self.father, self.mother))
 
-C_multiply ()
-
-Task 2, easy, file_name - remover.py
-
-import os
-
-def remover(dirname):
-    try:
-        os.rmdir(dirname)
-    except Exception:
-        print("Can't remove directory ", dirname)
-
-def R_multiply():
-    for index in range(1, 10):
-        remover("dir_", str(1))
-
-R_multiply ()
-
-Task 3, easy, file_name - copymaker.py
-
-import os
-
-def copymaker(s, d):
-	open(s, "r", encoding-"UTF-8"), open(d, "w", encoding-"UTF-8"): d.write(s.read())
-
-copymaker(os.path.basename(__file__), os.path.basename(__file__), "_copy.py")
-
-Task 4, easy, file_name - disclosure.py
-
-import os
-
-def disclosure():
-	for index in os.listdir():
-		if os.path.isdir(index):
-		print(index)
-
-disclosure()
-
-Task 1, normal, file_name - resume.py
-
-import creator
-import remover
-import copymaker
-import disclosure
-
-answer = "" # чтобы не было ошибки, и мы зашли в цикл
-while answer != "q": # начало цикла
-answer = input("Do you want to work? y or n or q")
-if answer == "y":
-	print("Great!")
-	print("What would you like me to do?")
-	print("[1] <dirname> - create new directories")
-	print("[2] - remove directories")
-	print("[3] - make a copy")
-	print("[4] - show all the files in the current directory")
-	do = int(input("The action number:"))
-	if do == 1:
-		C_multiply
-		print ("Success")
-	elif do == 2:
-		R_multiply
-		print ("Success")
-	elif do == 3: 
-		copymaker(os.path.basename(__file__), os.path.basename(__file__), "_copy.py")
-		print ("Success")
-	elif do == 4:
-		disclosure()	
-	else:
-		pass
-elif answer == "n":
-	print("Goodbye, have a nice day!")
-else:
-	print("Undefined answer, I need to look for it in a dictionary")
+class Teacher():
+    def __init__(self, name, subject):
+        self.name = name
+        self.subject = subject
